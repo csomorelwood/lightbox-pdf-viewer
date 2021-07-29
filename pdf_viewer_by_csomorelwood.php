@@ -16,7 +16,7 @@ function register_the_magical_styles_for_lightbox_pdf_viewer_by_csomorelwood() {
 add_action( 'init','register_the_magical_styles_for_lightbox_pdf_viewer_by_csomorelwood');
 
 function register_the_magical_scripts_for_lightbox_pdf_viewer_by_csomorelwood() {
-  wp_register_script( 'PDFJS', 'https://cdn.jsdelivr.net/npm/pdfjs-dist@2.7.570/build/pdf.min.js', null, null, true );
+  wp_register_script('PDFJS', plugin_dir_url( __FILE__ ) . '/assets/js/pdf.min.js' );
   wp_enqueue_script('PDFJS');
 
   wp_register_script('lightbox_pdf_viewer_script', plugin_dir_url( __FILE__ ) . '/assets/js/lightbox_pdf_viewer.js' );
@@ -35,7 +35,7 @@ function lightbox_pdf_viewer_register_options_page() {
 add_action('admin_menu', 'lightbox_pdf_viewer_register_options_page');
 
 // lightbox_pdf
-define ('PDF_TYPE', 'lightbox_pdf');
+define ('LIGHTBOX_PDF_TYPE_GENERATED_BY_CSOMOR', 'lightbox_pdf_post_type_generated_by_the_god_himself');
 add_action( 'init', 'add_lightbox_pdf_post_type_for_lightbox_pdf_viewer_plugin_by_csomorelwood', 0 );
 function add_lightbox_pdf_post_type_for_lightbox_pdf_viewer_plugin_by_csomorelwood(){
 	$args = array(
@@ -49,7 +49,7 @@ function add_lightbox_pdf_post_type_for_lightbox_pdf_viewer_plugin_by_csomorelwo
 		'taxonomies' => array( 'category', 'post_tag' ),
 		'hierarchical' => false
 	);
-	register_post_type( PDF_TYPE, $args );
+	register_post_type( LIGHTBOX_PDF_TYPE_GENERATED_BY_CSOMOR, $args );
 }
 
 /*
@@ -60,7 +60,7 @@ function add_lightbox_pdf_post_type_for_lightbox_pdf_viewer_plugin_by_csomorelwo
 add_action("admin_init", "init_lightbox_pdf_file_selector_by_csomorelwood");
 add_action('save_post', 'save_lightbox_pdf_file_by_csomorelwood');
 function init_lightbox_pdf_file_selector_by_csomorelwood(){
-  add_meta_box("selected_lightbox_pdf", "PDF Document", "lightbox_pdf_file_selector_by_csomorelwood", PDF_TYPE, "normal", "low");
+  add_meta_box("selected_lightbox_pdf", "PDF Document", "lightbox_pdf_file_selector_by_csomorelwood", LIGHTBOX_PDF_TYPE_GENERATED_BY_CSOMOR, "normal", "low");
 }
 function lightbox_pdf_file_selector_by_csomorelwood(){
   global $post;
@@ -80,25 +80,25 @@ function lightbox_pdf_file_selector_by_csomorelwood(){
   echo '<option class="pdf_select">Select a PDF file</option>';
   foreach ( $query_pdf->posts as $file) {
     if($selected == $pdf[]= $file->guid){
-      echo '<option value="'.$pdf[]= $file->guid.'" selected="true">'.$pdf[]= $file->guid.'</option>';
+      echo '<option value="'.$pdf[]= esc_html($file->guid).'" selected="true">'.$pdf[]= esc_html($file->guid).'</option>';
     } else{
-      echo '<option value="'.$pdf[]= $file->guid.'">'.$pdf[]= $file->guid.'</option>';
+      echo '<option value="'.$pdf[]= esc_html($file->guid).'">'.$pdf[]= esc_html($file->guid).'</option>';
     }
     $count++;
   }
   echo '</select><br /></div>';
   echo '<p>Selecting a pdf file from the above list to attach to this post.</p>';
-  echo '<div class="pdf_count"><span>Files:</span> <b>'.$count.'</b></div>';
+  echo '<div class="pdf_count"><span>Files:</span> <b>'.esc_html($count).'</b></div>';
 }
 function save_lightbox_pdf_file_by_csomorelwood(){
   global $post;
   if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE){ return $post->ID; }
-  update_post_meta($post->ID, "_selected_pdf", $_POST["selected"]);
+  update_post_meta($post->ID, "_selected_pdf", esc_url($_POST["selected"]));
 }
 function lightbox_pdf_viewer_draw_pdf($id, $option, $audio, $class){
   if($option == "thumbnail"){
     echo '<div class="lightbox_pdf-card">';
-      echo '<a href="javascript: openLightBoxPDFView(\'' . get_post_meta( $id, "_selected_pdf", TRUE ) . '\', \'' . ($audio ? get_post_meta( $id, "_selected_mp3", TRUE ) : "") . '\');" class="open-lbpdf ' . ($class ? $class : '') . '">';
+      echo '<a href="javascript: openLightBoxPDFView(\'' . get_post_meta( $id, "_selected_pdf", TRUE ) . '\', \'' . ($audio ? get_post_meta( $id, "_selected_mp3", TRUE ) : "") . '\');" class="open-lbpdf ' . ($class ? esc_html($class) : '') . '">';
         echo '<div class="rounded-box">';
           echo '<img src="' . get_the_post_thumbnail_url($id) . '" alt="pdf-thumbnail-' . $id . '">';
           echo '<div class="pdf-shadow"><h5>' . get_the_title($id) . '</h5><p>' . __('Open', 'lbpdf') . '</p></div>';
@@ -106,7 +106,7 @@ function lightbox_pdf_viewer_draw_pdf($id, $option, $audio, $class){
       echo '</a>';
     echo '</div>';
   } else{
-    echo '<a href="javascript: openLightBoxPDFView(\'' . get_post_meta( $id, "_selected_pdf", TRUE ) . '\', \'' . ($audio ? get_post_meta( $id, "_selected_mp3", TRUE ) : "") . '\');" class="open-lbpdf ' . ($class ? $class : '') . '">';
+    echo '<a href="javascript: openLightBoxPDFView(\'' . get_post_meta( $id, "_selected_pdf", TRUE ) . '\', \'' . ($audio ? get_post_meta( $id, "_selected_mp3", TRUE ) : "") . '\');" class="open-lbpdf ' . ($class ? esc_html($class) : '') . '">';
       echo __('View', 'lbpdf');
     echo '</a>';
   }
@@ -121,7 +121,7 @@ function lightbox_pdf_viewer_draw_pdf($id, $option, $audio, $class){
 add_action("admin_init", "init_lightbox_mp3_file_selector_by_csomorelwood");
 add_action('save_post', 'save_lightbox_mp3_file_by_csomorelwood');
 function init_lightbox_mp3_file_selector_by_csomorelwood(){
-  add_meta_box("selected_lightbox_mp3", "MP3 File", "lightbox_mp3_file_selector_by_csomorelwood", PDF_TYPE, "normal", "low");
+  add_meta_box("selected_lightbox_mp3", "MP3 File", "lightbox_mp3_file_selector_by_csomorelwood", LIGHTBOX_PDF_TYPE_GENERATED_BY_CSOMOR, "normal", "low");
 }
 function lightbox_mp3_file_selector_by_csomorelwood(){
   global $post;
@@ -141,20 +141,20 @@ function lightbox_mp3_file_selector_by_csomorelwood(){
   echo '<option class="mp3_select">Select an MP3 file</option>';
   foreach ( $query_mp3->posts as $file) {
     if($selected == $mp3[]= $file->guid){
-      echo '<option value="'.$mp3[]= $file->guid.'" selected="true">'.$mp3[]= $file->guid.'</option>';
+      echo '<option value="'.$mp3[]= esc_html($file->guid).'" selected="true">'.$mp3[]= esc_html($file->guid).'</option>';
     } else{
-      echo '<option value="'.$mp3[]= $file->guid.'">'.$mp3[]= $file->guid.'</option>';
+      echo '<option value="'.$mp3[]= esc_html($file->guid).'">'.$mp3[]= esc_html($file->guid).'</option>';
     }
     $count++;
   }
   echo '</select><br /></div>';
   echo '<p>Selecting a mp3 file from the above list to attach to this post.</p>';
-  echo '<div class="mp3_count"><span>Files:</span> <b>'.$count.'</b></div>';
+  echo '<div class="mp3_count"><span>Files:</span> <b>'.esc_html($count).'</b></div>';
 }
 function save_lightbox_mp3_file_by_csomorelwood(){
   global $post;
   if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE){ return $post->ID; }
-  update_post_meta($post->ID, "_selected_mp3", $_POST["selected-audio"]);
+  update_post_meta($post->ID, "_selected_mp3", esc_url($_POST["selected-audio"]));
 }
 
 /*

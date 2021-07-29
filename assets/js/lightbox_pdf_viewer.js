@@ -22,7 +22,7 @@ function openLightBoxPDFView(pdf_url, mp3_url){
     pdf_url.replace("https:", "http:");
   }
   pdfjsLib = window['pdfjs-dist/build/pdf'];
-  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.7.570/pdf.worker.min.js';
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'pdf.worker.min.js';
   document.getElementById(wrapperID) ? document.getElementById(wrapperID).classList.remove('hidden') : console.log('no lightbox pdf wrapper found')
   document.getElementById('download-pdf').href = pdf_url
   document.getElementById('pdf-new-tab').href = pdf_url

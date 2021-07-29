@@ -4,7 +4,7 @@ Donate link: https://paypal.me/csomorelwood
 Tags: pdf, lightbox, pdf-viewer, lightbox-pdf
 Requires at least: 3.0
 Tested up to: 5.8
-Stable tag: 5.8
+Stable tag: 1.0
 Requires PHP: 7.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
