@@ -21,6 +21,12 @@ function register_the_magical_scripts_for_lightbox_pdf_viewer_by_csomorelwood() 
 
   wp_register_script('lightbox_pdf_viewer_script', plugin_dir_url( __FILE__ ) . '/assets/js/lightbox_pdf_viewer.js' );
   wp_enqueue_script( 'lightbox_pdf_viewer_script');
+  $plugin_url = array( 
+    'expand_url' => plugin_dir_url( __FILE__ ) . '/assets/images/expand.png',
+    'zoomin_url' => plugin_dir_url( __FILE__ ) . '/assets/images/zoom-in.png',
+    'zoomout_url' => plugin_dir_url( __FILE__ ) . '/assets/images/zoom-out.png'
+  );
+  wp_localize_script( 'lightbox_pdf_viewer_script', 'plugin_url', $plugin_url );
  }
 add_action('init', 'register_the_magical_scripts_for_lightbox_pdf_viewer_by_csomorelwood');
 
@@ -100,7 +106,7 @@ function lightbox_pdf_viewer_draw_pdf($id, $option, $audio, $class){
     echo '<div class="lightbox_pdf-card">';
       echo '<a href="javascript: openLightBoxPDFView(\'' . get_post_meta( $id, "_selected_pdf", TRUE ) . '\', \'' . ($audio ? get_post_meta( $id, "_selected_mp3", TRUE ) : "") . '\');" class="open-lbpdf ' . ($class ? esc_attr($class) : '') . '">';
         echo '<div class="rounded-box">';
-          echo '<img src="' . get_the_post_thumbnail_url($id) . '" alt="pdf-thumbnail-' . $id . '">';
+          echo '<img src="' . get_the_post_thumbnail_url($id) . '" alt="pdf-thumbnail-' . esc_attr($id) . '">';
           echo '<div class="pdf-shadow"><h5>' . get_the_title($id) . '</h5><p>' . __('Open', 'lbpdf') . '</p></div>';
         echo '</div>';
       echo '</a>';

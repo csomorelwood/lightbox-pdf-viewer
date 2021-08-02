@@ -26,9 +26,9 @@ function openLightBoxPDFView(pdf_url, mp3_url){
   document.getElementById(wrapperID) ? document.getElementById(wrapperID).classList.remove('hidden') : console.log('no lightbox pdf wrapper found')
   document.getElementById('download-pdf').href = pdf_url
   document.getElementById('pdf-new-tab').href = pdf_url
-  document.getElementById('newtab-img').src = window.location.protocol + '//' + window.location.hostname + '/wp-content/plugins/pdf_viewer_by_csomor/assets/images/expand.png'
-  document.getElementById(zoominID).style.backgroundImage = 'url(' + window.location.protocol + '//' + window.location.hostname + '/wp-content/plugins/pdf_viewer_by_csomor/assets/images/zoom-in.png)'
-  document.getElementById(zoomoutID).style.backgroundImage = 'url(' + window.location.protocol + '//' + window.location.hostname + '/wp-content/plugins/pdf_viewer_by_csomor/assets/images/zoom-out.png)'
+  document.getElementById('newtab-img').src = plugin_url.expand_url
+  document.getElementById(zoominID).style.backgroundImage = 'url(' + plugin_url.zoomin_url + ')'
+  document.getElementById(zoomoutID).style.backgroundImage = 'url(' + plugin_url.zoomout_url + ')'
   currentPage = 1
   document.body.classList.add('no-scroll')
 
