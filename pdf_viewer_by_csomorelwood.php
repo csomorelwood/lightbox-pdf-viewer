@@ -104,7 +104,7 @@ function save_lightbox_pdf_file_by_csomorelwood(){
 function lightbox_pdf_viewer_draw_pdf($id, $option, $audio, $class){
   if($option == "thumbnail"){
     echo '<div class="lightbox_pdf-card">';
-      echo '<a href="javascript: openLightBoxPDFView(\'' . get_post_meta( $id, "_selected_pdf", TRUE ) . '\', \'' . ($audio ? get_post_meta( $id, "_selected_mp3", TRUE ) : "") . '\');" class="open-lbpdf ' . ($class ? esc_attr($class) : '') . '">';
+      echo '<a href="javascript: openLightBoxPDFView(\'' . esc_attr(get_post_meta( $id, "_selected_pdf", TRUE )) . '\', \'' . ($audio ? esc_attr(get_post_meta( $id, "_selected_mp3", TRUE )) : "") . '\');" class="open-lbpdf ' . ($class ? esc_attr($class) : '') . '">';
         echo '<div class="rounded-box">';
           echo '<img src="' . get_the_post_thumbnail_url($id) . '" alt="pdf-thumbnail-' . esc_attr($id) . '">';
           echo '<div class="pdf-shadow"><h5>' . get_the_title($id) . '</h5><p>' . __('Open', 'lbpdf') . '</p></div>';
@@ -112,7 +112,7 @@ function lightbox_pdf_viewer_draw_pdf($id, $option, $audio, $class){
       echo '</a>';
     echo '</div>';
   } else{
-    echo '<a href="javascript: openLightBoxPDFView(\'' . get_post_meta( $id, "_selected_pdf", TRUE ) . '\', \'' . ($audio ? get_post_meta( $id, "_selected_mp3", TRUE ) : "") . '\');" class="open-lbpdf ' . ($class ? esc_attr($class) : '') . '">';
+    echo '<a href="javascript: openLightBoxPDFView(\'' . esc_attr(get_post_meta( $id, "_selected_pdf", TRUE )) . '\', \'' . ($audio ? esc_attr(get_post_meta( $id, "_selected_mp3", TRUE )) : "") . '\');" class="open-lbpdf ' . ($class ? esc_attr($class) : '') . '">';
       echo __('View', 'lbpdf');
     echo '</a>';
   }
@@ -131,9 +131,9 @@ function init_lightbox_mp3_file_selector_by_csomorelwood(){
 }
 function lightbox_mp3_file_selector_by_csomorelwood(){
   global $post;
-  $custom  = get_post_custom($post->ID);
-  $selected    = $custom["_selected_mp3"][0];
-  $count   = 0;
+  $custom = get_post_custom($post->ID);
+  $selected = $custom["_selected_mp3"][0];
+  $count = 0;
   echo '<div class="selected_header">';
   $query_mp3_args = array(
     'post_type' => 'attachment',
